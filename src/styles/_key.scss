@@ -1,0 +1,19 @@
+.key {
+    height: 100%;
+    width: 4rem;
+    border: none;
+    border-radius: 1.5rem;
+    background: #282b33;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:active {
+        background: #535762;
+    }
+
+    p {
+        font-size: 1.5rem;
+        color: white;
+    }
+}
