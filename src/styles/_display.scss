@@ -25,6 +25,9 @@
         }
 
         .operation-input {
+            // limit the width to be 10 characters long\
+            max-width: 10ch !important;
+            height: 6rem;
             background: transparent;
             pointer-events: none;
             font-size: 2rem;
