@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 const Display = () => {
     const [operation, setOperation] = useState("");
@@ -7,11 +7,13 @@ const Display = () => {
     const functions = ["c", "Backspace", "(", ")", "%"];
     const validKeys = numbers.concat(operators, functions);
 
+    // const validKeys = numbers.concat(operators, functions);
+
     const handleKey = (key) => {
         if (key === "c") {
-            setOperation("");
+            // setOperation("");
         } else if (key === "Backspace") {
-            setOperation(operation.slice(0, -1));
+            // setOperation(operation.slice(0, -1));
         } else if (key === "=") {
             setOperation(eval(operation));
         } else if (key === "%") {
