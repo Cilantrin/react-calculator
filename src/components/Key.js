@@ -1,9 +1,5 @@
 const Key = ({ icon }) => {
-    return (
-        <button className="key">
-            <p>{icon}</p>
-        </button>
-    );
+    return <button className="key">{icon}</button>;
 };
 
 export default Key;

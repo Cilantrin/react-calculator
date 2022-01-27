@@ -7,13 +7,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.5rem;
+    color: white;
 
     &:active {
         background: #535762;
-    }
-
-    p {
-        font-size: 1.5rem;
-        color: white;
     }
 }
