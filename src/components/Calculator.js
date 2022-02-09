@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import Display from "./Display";
 import Keyboard from "./Keyboard";
 

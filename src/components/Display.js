@@ -9,18 +9,42 @@ const Display = () => {
     const validKeys = numbers.concat(operators, functions);
 
     const handleKey = (key) => {
-        // Prevents the existence of two operators together "+-" and the existence of an operator after a dot ".+"
+        const findChar = (char) => {
+            [...operation].reverse().forEach((opChar) => {
+                if (operators.includes(opChar)) return false;
+                if (opChar === char) return true;
+            });
+
+            // let charFound = false;
+
+            // [...operation].reverse().forEach((opChar) => {
+            //     if (operators.includes(opChar)) return;
+            //     if (opChar === char) {
+            //         charFound = true;
+            //         return;
+            //     }
+            // });
+
+            // return charFound;
+        };
+
+        // Prevents the existence of two operators together ("+-") and the existence of an operator after a dot (".+").
         if (
             operators.includes(key) &&
             (operators.includes(operation.at(-1)) || operation.at(-1) === ".")
         )
             return;
 
+        // Prevents the existence of a "." or a "%" after anything other than a number ("+.", "-%").
+        if ((key === "." || key === "%") && !numbers.includes(operation.at(-1)))
+            return;
+
+        // TODO: clean the messy code.
         if (key === "x" || key === "*") setOperation(operation + "×");
-        else if (key === "/") setOperation(operation + "÷");
-        else if (key === "c" || key === "C") setOperation("");
-        else if (key === "Backspace") setOperation(operation.slice(0, -1));
-        else if (key === "=" || key === "Enter") {
+        if (key === "/") setOperation(operation + "÷");
+        if (key === "c" || key === "C") setOperation("");
+        if (key === "Backspace") setOperation(operation.slice(0, -1));
+        if (key === "=" || key === "Enter") {
             if (operators.includes(operation.at(-1))) return;
 
             const operationToEval = operation
@@ -30,63 +54,87 @@ const Display = () => {
             const result = eval(operationToEval);
 
             setOperation(result.toString());
-            return;
         } else if (key === "%") {
             const lastOperator = operators.find((operator) =>
                 operation.includes(operator)
             );
 
+            // Forces the "%" to only be used with a multiplication.
             if (lastOperator !== "×") return;
-            if (!numbers.includes(operation.at(-1))) return;
 
-            let percentSignFound = false;
-
-            for (let i = operation.length; i !== 0; i--) {
-                const currentChar = operation[i];
-
-                if (operators.includes(currentChar)) return;
-                if (currentChar === "%") percentSignFound = true;
-            }
-
-            if (!percentSignFound) {
-                setOperation(operation + "%");
-            }
-            return;
+            // Only appends the "%" if there are no other "%" signs inside the current operand.
+            if (!findChar("%")) setOperation(operation + "%");
         } else if (key === ".") {
-            if (!numbers.includes(operation.at(-1))) return;
-            let dotFound = false;
-
-            for (let i = operation.length; i !== 0; i--) {
-                const currentChar = operation[i];
-
-                if (operators.includes(currentChar)) return;
-                if (currentChar === ".") dotFound = true;
-            }
-
-            if (!dotFound) {
-                setOperation(operation + ".");
-            }
-            return;
+            if (!findChar(".")) setOperation(operation + ".");
         } else {
             if (operation.at(-1) === "%" && numbers.includes(key)) return;
-
             setOperation(operation + key);
-            return;
         }
+
+        // switch (key) {
+        //     case "x":
+        //     case "*":
+        //         setOperation(operation + "×");
+        //         break;
+        //     case "/":
+        //         setOperation(operation + "÷");
+        //         break;
+        //     case "c":
+        //     case "C":
+        //         setOperation("");
+        //         break;
+        //     case "Backspace":
+        //         setOperation(operation.slice(0, -1));
+        //         break;
+        //     case "=":
+        //     case "Enter":
+        //         if (operators.includes(operation.at(-1))) break;
+
+        //         const operationToEval = operation
+        //             .replace("×", "*")
+        //             .replace("÷", "/")
+        //             .replace("%", "*0.01");
+        //         // TODO: replace eval() with Function().
+        //         const result = eval(operationToEval);
+
+        //         setOperation(result.toString());
+        //         break;
+        //     case "%":
+        //         const lastOperator = operators.find((operator) =>
+        //             operation.includes(operator)
+        //         );
+
+        //         // Forces the "%" to only be used with a multiplication.
+        //         if (lastOperator !== "×") break;
+
+        //         // Only appends the "%" if there are no other "%" signs inside the current operand.
+        //         if (!findChar("%")) setOperation(operation + "%");
+        //         break;
+        //     case ".":
+        //         // Only appends the "." if there are no other "." characters inside the current operand.
+        //         if (!findChar(".")) setOperation(operation + ".");
+        //         break;
+        //     default:
+        //         // Prevents the existence of a number after a "%" ("4%3").
+        //         if (operation.at(-1) === "%" && numbers.includes(key)) break;
+        //         setOperation(operation + key);
+        // }
     };
 
     const keyDownHandler = (e) => {
         e.preventDefault();
-
         const pressedKey = e.key;
 
+        // If the pressed key is not a valid key, do nothing.
         if (!validKeys.includes(pressedKey)) return;
+
         handleKey(pressedKey);
     };
 
     return (
         <div className="display">
             <div className="container">
+                {/* The text area only receives input to be eveluated, it doesn't output anything. */}
                 <textarea
                     name="operation"
                     className="operation"
