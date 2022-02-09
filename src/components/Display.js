@@ -51,6 +51,7 @@ const Display = () => {
                 .replace("×", "*")
                 .replace("÷", "/")
                 .replace("%", "*0.01");
+            // TODO: replace eval() with Function()
             const result = eval(operationToEval);
 
             setOperation(result.toString());
@@ -65,60 +66,13 @@ const Display = () => {
             // Only appends the "%" if there are no other "%" signs inside the current operand.
             if (!findChar("%")) setOperation(operation + "%");
         } else if (key === ".") {
+            // Only appends the "." if ther eare no other "." characters inside the current operand.
             if (!findChar(".")) setOperation(operation + ".");
         } else {
+            // Prevents the existence of a number after a "%" ("4%3").
             if (operation.at(-1) === "%" && numbers.includes(key)) return;
             setOperation(operation + key);
         }
-
-        // switch (key) {
-        //     case "x":
-        //     case "*":
-        //         setOperation(operation + "×");
-        //         break;
-        //     case "/":
-        //         setOperation(operation + "÷");
-        //         break;
-        //     case "c":
-        //     case "C":
-        //         setOperation("");
-        //         break;
-        //     case "Backspace":
-        //         setOperation(operation.slice(0, -1));
-        //         break;
-        //     case "=":
-        //     case "Enter":
-        //         if (operators.includes(operation.at(-1))) break;
-
-        //         const operationToEval = operation
-        //             .replace("×", "*")
-        //             .replace("÷", "/")
-        //             .replace("%", "*0.01");
-        //         // TODO: replace eval() with Function().
-        //         const result = eval(operationToEval);
-
-        //         setOperation(result.toString());
-        //         break;
-        //     case "%":
-        //         const lastOperator = operators.find((operator) =>
-        //             operation.includes(operator)
-        //         );
-
-        //         // Forces the "%" to only be used with a multiplication.
-        //         if (lastOperator !== "×") break;
-
-        //         // Only appends the "%" if there are no other "%" signs inside the current operand.
-        //         if (!findChar("%")) setOperation(operation + "%");
-        //         break;
-        //     case ".":
-        //         // Only appends the "." if there are no other "." characters inside the current operand.
-        //         if (!findChar(".")) setOperation(operation + ".");
-        //         break;
-        //     default:
-        //         // Prevents the existence of a number after a "%" ("4%3").
-        //         if (operation.at(-1) === "%" && numbers.includes(key)) break;
-        //         setOperation(operation + key);
-        // }
     };
 
     const keyDownHandler = (e) => {
