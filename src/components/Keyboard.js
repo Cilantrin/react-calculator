@@ -1,38 +1,53 @@
 import Key from "./Key";
 
-const Keyboard = () => {
+const Keyboard = ({ operation, setOperation, handleKey }) => {
+    const keys = [
+        {
+            AC: "c",
+            DEL: "Backspace",
+            "%": "%",
+            "÷": "/",
+        },
+        {
+            7: "7",
+            8: "8",
+            9: "9",
+            "×": "x",
+        },
+        {
+            4: "4",
+            5: "5",
+            6: "6",
+            "-": "-",
+        },
+        {
+            1: "1",
+            2: "2",
+            3: "3",
+            "+": "+",
+        },
+        {
+            0: "0",
+            ".": ".",
+            "=": "=",
+        },
+    ];
+
     return (
         <div className="keyboard">
-            <div className="row row1">
-                <Key icon={"AC"} />
-                <Key icon={"( )"} />
-                <Key icon={"%"} />
-                <Key icon={"÷"} />
-            </div>
-            <div className="row row2">
-                <Key icon={"7"} />
-                <Key icon={"8"} />
-                <Key icon={"9"} />
-                <Key icon={"×"} />
-            </div>
-            <div className="row row3">
-                <Key icon={"4"} />
-                <Key icon={"5"} />
-                <Key icon={"6"} />
-                <Key icon={"-"} />
-            </div>
-            <div className="row row4">
-                <Key icon={"1"} />
-                <Key icon={"2"} />
-                <Key icon={"3"} />
-                <Key icon={"+"} />
-            </div>
-            <div className="row row5">
-                <Key icon={"+/-"} />
-                <Key icon={"0"} />
-                <Key icon={"."} />
-                <Key icon={"="} />
-            </div>
+            {keys.map((rowKeys, index) => (
+                <div className={`row row${index + 1}`}>
+                    {Object.entries(rowKeys).map((rowKey) => (
+                        <Key
+                            icon={rowKey[0]} // key: icon
+                            action={rowKey[1]} // value: action
+                            operation={operation}
+                            setOperation={setOperation}
+                            handleKey={handleKey}
+                        />
+                    ))}
+                </div>
+            ))}
         </div>
     );
 };
